@@ -13,6 +13,8 @@ app.get('/', index.get)
 //
 app.get('/:id', index.getUser)
 app.delete('/:id', index.delUser)
+app.put('/:id', index.putUser)
+app.post('/', index.addUser)
 
 app.listen(PORT, function () {
   console.log('Listening on port', PORT)

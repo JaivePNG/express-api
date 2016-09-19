@@ -6,7 +6,9 @@ var router = express.Router()
 module.exports = {
   get: get,
   getUser: getUser,
-  delUser: delUser
+  delUser: delUser,
+  putUser:putUser,
+  addUser: addUser
 }
 
 function get (req, res) {
@@ -48,14 +50,33 @@ function delUser (req, res) {
   })
 }
 
+function putUser (req, res) {
+  knex('users')
+  .where( "id", "=", req.params.id )
+  .update({
+    name: req.body.name,
+    email: req.body.email
+    })
+  .then(function (updateCount) {
+    res.send(204)
+  })
+  .catch(function (err) {
+    res.status(500).send('DATABASE ERROR: ' + err.message)
+  })
+}
 
+function addUser (req, res) {
+  knex ('users')
+  // .where("id", "=", req.prams.id)
+  .insert({
+    name: req.body.name,
+    email: req.body.email
+    })
+    .then(function (newID) {
+      res.send("http://localhost:3000/" + newID)
+    })
+    .catch(function (err) {
+      res.status(500).send('DATABASE ERROR: ' + err.message)
+    })
 
-// var knex = require("knex")(knexConfig);
-// knex("test")
-// .where("col1","a4")
-// .del()
-// .then(function (count) {
-//   console.log(count);
-// }).finally(function () {
-//   knex.destroy();
-// });
+}
